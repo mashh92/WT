@@ -135,3 +135,84 @@ else
   }
 }
 }
+
+
+
+
+
+
+{
+      dirend->next=NEWNODE;
+      dirend=dirend->next;
+     }
+    dirend->next=NULL;
+    printf("\nEnter A Filename : ");
+    scanf("%s",dirend->fname);
+    printf("\nEnter The Number of Blocks To Allocate : ");
+    scanf("%d",&n);
+    dirend->k=n;
+    i=j=flag=0;
+    while(n>0)
+    {
+     if(bitvector[i]==1)//block i is free
+      {
+       if(flag==0)//index block not allocated
+       {
+	dirend->ibno=i;
+	flag=1;
+       }
+       else//allocate data blck
+       {
+	dirend->blist[j++]=i;  //store block i in blist[j]
+	n--;
+       }
+       bitvector[i]=0;//mark ith block allocated
+       if(n==0)
+	break;
+      }//if
+      i++;
+     }//while
+    break;
+    case 3 :
+     printf("\nDirectory : ");
+     printf("\n---------------------------------------------");
+     printf("\nFilename  IndexBlockNo      Block List");
+     printf("\n--------------------------------------------");
+     for(t1=dirst;t1!=NULL;t1=t1->next)
+     { printf("\n%-10s %5d\t",t1->fname,t1->ibno);
+       for(j=0;j<t1->k;j++)
+	 printf("  %5d",t1->blist[j]);
+     }
+     printf("\n-------------------------------------------");
+     break;
+    case 4 :
+     printf("\nEnter a Filename : ");
+     scanf("%s",fname);
+     t1=dirst;
+     while(t1!=NULL)
+     {
+      if(strcmp(t1->fname,fname)==0)
+	break;
+      t2=t1;
+      t1=t1->next;
+     }
+     if(t1!=NULL)  //file found
+     {
+      for(j=0;j<t1->k;j++) //mark data blocks as free
+       bitvector[t1->blist[j]]=1;
+
+      bitvector[t1->ibno]=1;//mark index block as free
+      if(t1==dirst)
+       dirst=dirst->next;
+      else
+       t2->next=t1->next;
+
+       if(dirst==NULL)
+	dirend=NULL;
+       free(t1);
+      }
+     else
+       printf("\nFile not found..");
+      break;
+    }
+}
